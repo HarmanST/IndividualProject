@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Input</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Leaflet CSS for the map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+<body>
+<h1>Enter Your Location</h1>
+<p>{{ message }}</p>
+
+<form method="POST">
+    <label for="latitude">Latitude:</label>
+    <input type="text" id="latitude" name="latitude" required>
+    <br><br>
+
+    <label for="longitude">Longitude:</label>
+    <input type="text" id="longitude" name="longitude" required>
+    <br><br>
+
+    <button type="submit">Submit</button>
+</form>
+
+<h2>Or specify your position on the map:</h2>
+<div id="map" style="height: 400px;"></div>
+
+<!-- Leaflet JS for map functionality -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    var map = L.map('map').setView([51.505, -0.09], 2); // Initial map view
+
+    // Load map tiles from OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    var marker;
+
+    // Add marker on map click and update input fields with coordinates
+    map.on('click', function(e) {
+        if (marker) {
+            map.removeLayer(marker);
+        }
+        marker = L.marker(e.latlng).addTo(map);
+        document.getElementById('latitude').value = e.latlng.lat;
+        document.getElementById('longitude').value = e.latlng.lng;
+    });
+</script>
+
+{% if latitude and longitude %}
+<h3>Your location is: Latitude {{ latitude }}, Longitude {{ longitude }}</h3>
+{% endif %}
+
+{% if result %}
+<h3>Calculated Result: {{ result }}</h3>
+{% endif %}
+
+</body>
+</html>

@@ -5,8 +5,6 @@ Created on Fri Aug  2 13:32:52 2024
 @author: harma
 """
 
-
-
 from __future__ import division
 from __future__ import print_function
 
