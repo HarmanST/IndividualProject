@@ -10,36 +10,90 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 10px;
             background-color: #f4f4f4;
         }
 
         h1 {
             color: #333;
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
         }
 
         form {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
         }
 
         .output-container {
             background-color: #fff;
             border: 1px solid #ccc;
-            padding: 20px;
-            margin-top: 20px;
+            padding: 15px;
             border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        table {
+        .output-container h3 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .output-container p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .output-container table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 15px;
         }
 
-        th, td {
-            padding: 10px;
+        .output-container th,
+        .output-container td {
+            padding: 8px;
             text-align: left;
             border: 1px solid #ddd;
+            font-size: 14px;
         }
 
         #map-modal {
@@ -57,9 +111,8 @@
         #map-content {
             position: relative;
             margin: auto;
-            padding: 20px;
-            width: 80%;
-            height: 80%;
+            width: 90%;
+            height: 90%;
             background-color: #fff;
             border-radius: 8px;
         }
@@ -88,19 +141,15 @@
 <form method="POST">
     <label for="latitude">Latitude:</label>
     <input type="text" id="latitude" name="latitude" required>
-    <br><br>
 
     <label for="longitude">Longitude:</label>
     <input type="text" id="longitude" name="longitude" required>
-    <br><br>
 
     <label for="t">Minimum Shares (t):</label>
     <input type="number" id="t" name="t" value="3" min="2" required>
-    <br><br>
 
     <label for="n">Total Shares (n):</label>
     <input type="number" id="n" name="n" value="5" min="2" required>
-    <br><br>
 
     <button type="submit">Submit</button>
 </form>
