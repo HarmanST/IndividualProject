@@ -3,13 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Location Input</title>
+    <title>Scheme 1 - Location Input</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <!-- Leaflet CSS for the map -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 </head>
 <body>
-<h1>Enter Your Location</h1>
+<!-- Top Menu -->
+<nav>
+    <ul>
+        <li><a href="{{ url_for('index') }}">Scheme 1</a></li>
+        <li><a href="{{ url_for('scheme2') }}">Scheme 2</a></li>
+        <li><a href="{{ url_for('scheme3') }}">Scheme 3</a></li>
+    </ul>
+</nav>
+
+<h1>Scheme 1: Enter Your Location</h1>
 <p>{{ message }}</p>
 
 <form method="POST">

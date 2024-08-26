@@ -40,8 +40,15 @@ def get_location_info(latitude, longitude):
         print("Error: Received invalid JSON from Nominatim API.")
         return "Unknown", "Unknown"
 
+# Dummy function for different schemes (replace with actual logic)
+def process_scheme1(latitude, longitude, t, n):
+    return f"Scheme 1 processed with Latitude: {latitude}, Longitude: {longitude}, t: {t}, n: {n}"
 
+def process_scheme2(latitude, longitude, t, n):
+    return f"Scheme 2 processed with Latitude: {latitude}, Longitude: {longitude}, t: {t}, n: {n}"
 
+def process_scheme3(latitude, longitude, t, n):
+    return f"Scheme 3 processed with Latitude: {latitude}, Longitude: {longitude}, t: {t}, n: {n}"
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -64,6 +71,40 @@ def index():
         message = "Results successfully computed."
 
     return render_template('index.html', message=message, result=result, latitude=latitude, longitude=longitude, city=city, country=country)
+
+@app.route('/scheme2', methods=['GET', 'POST'])
+def scheme2():
+    message = "Please enter your location details for Scheme 2."
+    result = None
+
+    if request.method == 'POST':
+        latitude = float(request.form['latitude'])
+        longitude = float(request.form['longitude'])
+        t = int(request.form['t'])
+        n = int(request.form['n'])
+
+        result = process_scheme2(latitude, longitude, t, n)
+
+        message = "Scheme 2 results computed successfully."
+
+    return render_template('scheme2.html', message=message, result=result)
+
+@app.route('/scheme3', methods=['GET', 'POST'])
+def scheme3():
+    message = "Please enter your location details for Scheme 3."
+    result = None
+
+    if request.method == 'POST':
+        latitude = float(request.form['latitude'])
+        longitude = float(request.form['longitude'])
+        t = int(request.form['t'])
+        n = int(request.form['n'])
+
+        result = process_scheme3(latitude, longitude, t, n)
+
+        message = "Scheme 3 results computed successfully."
+
+    return render_template('scheme3.html', message=message, result=result)
 
 if __name__ == '__main__':
     app.run(debug=True)
