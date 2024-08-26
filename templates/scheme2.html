@@ -1,13 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title><!DOCTYPE html>
-      <html lang="en">
-      <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Scheme 2 - Location Input</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scheme 2 - Location Input</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
@@ -42,14 +38,24 @@
 {% if result %}
 <div class="output-container">
   <h3>Results:</h3>
-  <p>{{ result }}</p>
+  <p><strong>Recovered Latitude:</strong> {{ result['recovered_latitude'] }}</p>
+  <p><strong>Recovered Longitude:</strong> {{ result['recovered_longitude'] }}</p>
+  <h4>Shares:</h4>
+  <table>
+    <tr>
+      <th>Share #</th>
+      <th>Latitude Share</th>
+      <th>Longitude Share</th>
+    </tr>
+    {% for share in result['shares'] %}
+    <tr>
+      <td>{{ share[0] }}</td>
+      <td>{{ share[1] }}</td>
+      <td>{{ share[2] }}</td>
+    </tr>
+    {% endfor %}
+  </table>
 </div>
 {% endif %}
-</body>
-</html>
-</title>
-</head>
-<body>
-
 </body>
 </html>

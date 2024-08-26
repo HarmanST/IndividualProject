@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from Implementations.Schemes.PairingFunctions.main import shamir_secret_sharing
+import Implementations.Schemes.TwoPolyShamir.scheme2 as scheme2_module  # Renaming import to avoid conflicts
 import requests
 
 app = Flask(__name__)
@@ -40,16 +41,6 @@ def get_location_info(latitude, longitude):
         print("Error: Received invalid JSON from Nominatim API.")
         return "Unknown", "Unknown"
 
-# Dummy function for different schemes (replace with actual logic)
-def process_scheme1(latitude, longitude, t, n):
-    return f"Scheme 1 processed with Latitude: {latitude}, Longitude: {longitude}, t: {t}, n: {n}"
-
-def process_scheme2(latitude, longitude, t, n):
-    return f"Scheme 2 processed with Latitude: {latitude}, Longitude: {longitude}, t: {t}, n: {n}"
-
-def process_scheme3(latitude, longitude, t, n):
-    return f"Scheme 3 processed with Latitude: {latitude}, Longitude: {longitude}, t: {t}, n: {n}"
-
 @app.route('/', methods=['GET', 'POST'])
 def index():
     message = "Please enter your latitude and longitude below or select your position on the map."
@@ -74,7 +65,9 @@ def index():
 
 @app.route('/scheme2', methods=['GET', 'POST'])
 def scheme2():
-    message = "Please enter your location details for Scheme 2."
+    message = "Please enter your latitude and longitude below for Scheme 2."
+    latitude = None
+    longitude = None
     result = None
 
     if request.method == 'POST':
@@ -83,28 +76,35 @@ def scheme2():
         t = int(request.form['t'])
         n = int(request.form['n'])
 
-        result = process_scheme2(latitude, longitude, t, n)
+        recovered_latitude, recovered_longitude, shares = scheme2_module.process_scheme2(latitude, longitude, t, n)
 
-        message = "Scheme 2 results computed successfully."
+        result = {
+            "recovered_latitude": recovered_latitude,
+            "recovered_longitude": recovered_longitude,
+            "shares": shares
+        }
 
-    return render_template('scheme2.html', message=message, result=result)
+        message = "Results successfully computed."
+
+    return render_template('scheme2.html', message=message, result=result, latitude=latitude, longitude=longitude)
 
 @app.route('/scheme3', methods=['GET', 'POST'])
 def scheme3():
-    message = "Please enter your location details for Scheme 3."
+    message = "Scheme 3 is under construction."
+    # Placeholder variables
+    latitude = None
+    longitude = None
     result = None
 
     if request.method == 'POST':
+        # Implement Scheme 3 logic here
         latitude = float(request.form['latitude'])
         longitude = float(request.form['longitude'])
-        t = int(request.form['t'])
-        n = int(request.form['n'])
+        # Example: Process Scheme 3
+        # result = scheme3_function(latitude, longitude)
+        message = "Scheme 3 results successfully computed."
 
-        result = process_scheme3(latitude, longitude, t, n)
-
-        message = "Scheme 3 results computed successfully."
-
-    return render_template('scheme3.html', message=message, result=result)
+    return render_template('scheme3.html', message=message, result=result, latitude=latitude, longitude=longitude)
 
 if __name__ == '__main__':
     app.run(debug=True)
