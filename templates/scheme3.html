@@ -7,17 +7,12 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-<!-- Top Menu -->
-<nav>
-  <ul>
-    <li><a href="{{ url_for('index') }}">Scheme 1</a></li>
-    <li><a href="{{ url_for('scheme2') }}">Scheme 2</a></li>
-    <li><a href="{{ url_for('scheme3') }}">Scheme 3</a></li>
-  </ul>
-</nav>
 
 <h1>Scheme 3: Enter Your Location</h1>
 <p>{{ message }}</p>
+
+<!-- Back to Main Page Button -->
+<a href="{{ url_for('index') }}" class="button">Back to Main Page</a>
 
 <form method="POST">
   <label for="latitude">Latitude:</label>

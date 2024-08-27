@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheme 1 - Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<!-- Top Menu -->
+<nav>
+    <ul>
+        <li><a href="{{ url_for('index') }}">Scheme 1</a></li>
+        <li><a href="{{ url_for('scheme2') }}">Scheme 2</a></li>
+        <li><a href="#">Scheme 3</a></li>
+    </ul>
+</nav>
+
+<h1>Scheme 1: Results</h1>
+
+<!-- Enhanced Back to Main Page Button -->
+<a href="{{ url_for('index') }}" class="button main-page-button">Back to Main Page</a>
+
+<!-- Display which backend script is being used -->
+<p><strong>{{ backend_info }}</strong></p>
+
+{% if result %}
+<div class="output-container">
+    <h3>Inputted Location Details:</h3>
+    <p><strong>Latitude:</strong> {{ latitude }}</p>
+    <p><strong>Longitude:</strong> {{ longitude }}</p>
+    <p><strong>City:</strong> {{ city }}</p>
+    <p><strong>Country:</strong> {{ country }}</p>
+
+    <h3>Recovered Location Details:</h3>
+    <p><strong>Recovered Latitude:</strong> {{ result['recovered_latitude'] }}</p>
+    <p><strong>Recovered Longitude:</strong> {{ result['recovered_longitude'] }}</p>
+    <p><strong>Recovered City:</strong> {{ recovered_city }}</p>
+    <p><strong>Recovered Country:</strong> {{ recovered_country }}</p>
+
+    <h4>Shares:</h4>
+    <table>
+        <tr>
+            <th>Share #</th>
+            <th>Share Value</th>
+        </tr>
+        {% for share in result['shares'] %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ share }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endif %}
+
+</body>
+</html>

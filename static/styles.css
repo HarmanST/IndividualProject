@@ -116,3 +116,44 @@ button:hover {
     height: 100%;
     border-radius: 8px;
 }
+
+/* Enhanced Back to Main Page Button */
+.main-page-button {
+    background-color: #ff6b6b; /* Red color */
+    color: white;
+    font-size: 18px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-align: center;
+    display: inline-block;
+    margin-bottom: 20px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.main-page-button:hover {
+    background-color: #ff4949;
+}
+
+/* Positioning for the Use Map Button */
+form {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+#use-map-button {
+    margin-top: 10px; /* Adds space below the longitude input */
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+#use-map-button:hover {
+    background-color: #45a049;
+}
+
