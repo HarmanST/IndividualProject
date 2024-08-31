@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Two-Polynomial Shamir Secret Sharing - Display Shares</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<!-- Top Menu -->
+<nav>
+  <ul>
+    <li><a href="{{ url_for('index') }}">Input Location & Scheme</a></li>
+    <li><a href="{{ url_for('display_shares') }}">View Shares & Reconstruct</a></li>
+  </ul>
+</nav>
+
+<h1>Two-Polynomial Shamir Secret Sharing - Shares Generated</h1>
+<p><strong>Latitude:</strong> {{ latitude }}</p>
+<p><strong>Longitude:</strong> {{ longitude }}</p>
+<p><strong>City:</strong> {{ city }}</p>
+<p><strong>Country:</strong> {{ country }}</p>
+
+<h3>Shares:</h3>
+<table>
+  <tr>
+    <th>Share #</th>
+    <th>Latitude Share</th>
+    <th>Longitude Share</th>
+  </tr>
+  {% for share in result['shares'] %}
+  <tr>
+    <td>{{ loop.index }}</td>
+    <td>{{ share[1] }}</td>
+    <td>{{ share[2] }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<a href="{{ url_for('reconstruct') }}" class="button">Reconstruct Location</a>
+</body>
+</html>

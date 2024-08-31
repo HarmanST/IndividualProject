@@ -1,16 +1,15 @@
-from flask import Flask, render_template, request, redirect, url_for
-import requests  # Import the requests module
+from flask import Flask, render_template, request, redirect, url_for, session
+import requests
 from Implementations.Schemes.PairingFunctions.main import shamir_secret_sharing
-import Implementations.Schemes.TwoPolyShamir.scheme2 as scheme2_module
+import Implementations.Schemes.TwoPolyShamir.scheme2 as two_poly_shamir
 # Import other schemes as needed
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'  # Needed for session management
 
 def get_location_info(latitude, longitude):
-    # Assuming you already have this implemented, here's a placeholder
-    # Replace this with your actual implementation to fetch city and country based on coordinates
     url = f"https://nominatim.openstreetmap.org/reverse?format=json&lat={latitude}&lon={longitude}"
-    headers = {"User-Agent": "YourAppName/1.0 (yourname@example.com)"}  # Replace with your app's name and contact info
+    headers = {"User-Agent": "YourAppName/1.0 (yourname@example.com)"}
 
     try:
         response = requests.get(url, headers=headers)
@@ -28,81 +27,99 @@ def get_location_info(latitude, longitude):
 def index():
     message = "Please enter your latitude and longitude, choose t and n, and select the secret sharing scheme."
     if request.method == 'POST':
-        latitude = request.form['latitude']
-        longitude = request.form['longitude']
+        latitude = float(request.form['latitude'])
+        longitude = float(request.form['longitude'])
         t = int(request.form['t'])
         n = int(request.form['n'])
+
+        # Validate that n is greater than or equal to t
+        if n < t:
+            message = f"Error: The number of selected apps (n={n}) must be greater than or equal to the minimum shares (t={t})."
+            return render_template('index.html', message=message)
+
         scheme = request.form['scheme']
 
-        # Redirect to the appropriate scheme route
-        return redirect(url_for(scheme, latitude=latitude, longitude=longitude, t=t, n=n))
+        # Generate shares based on selected scheme
+        if scheme == 'shamirs_secret_sharing':
+            result = shamir_secret_sharing(latitude, longitude, t=t, n=n)
+        elif scheme == 'two_poly_shamir':
+            result = two_poly_shamir.process_scheme2(latitude, longitude, t, n)
+        else:
+            result = None  # Handle other schemes
+
+        # Save relevant data in session for later use
+        session['latitude'] = latitude
+        session['longitude'] = longitude
+        session['result'] = result
+        session['scheme'] = scheme
+
+        # Redirect to the page that displays the shares
+        return redirect(url_for('display_shares'))
 
     return render_template('index.html', message=message)
 
-@app.route('/scheme1')
-def scheme1():
-    latitude = float(request.args.get('latitude'))
-    longitude = float(request.args.get('longitude'))
-    t = int(request.args.get('t'))
-    n = int(request.args.get('n'))
-
-    result = shamir_secret_sharing(latitude, longitude, t=t, n=n)
+@app.route('/display_shares')
+def display_shares():
+    latitude = session.get('latitude')
+    longitude = session.get('longitude')
+    result = session.get('result')
+    scheme = session.get('scheme')
 
     # Get inputted city and country
     input_city, input_country = get_location_info(latitude, longitude)
 
-    # Get recovered city and country
-    recovered_city, recovered_country = get_location_info(result['recovered_latitude'], result['recovered_longitude'])
+    # Render appropriate template based on scheme
+    if scheme == 'shamirs_secret_sharing':
+        template = 'display_shares_shamirs_secret_sharing.html'
+    elif scheme == 'two_poly_shamir':
+        shares = result[2]  # The third item in the result tuple is the shares list
+        template = 'display_shares_two_poly_shamir.html'
+        result = {"shares": shares}  # Pass only the shares to the template
+    else:
+        template = 'display_shares_other.html'  # Default or other schemes
 
     return render_template(
-        'scheme1.html',
+        template,
         result=result,
         latitude=latitude,
         longitude=longitude,
         city=input_city,
         country=input_country,
-        recovered_city=recovered_city,
-        recovered_country=recovered_country,
-        backend_info="This page is using the main.py backend script."
+        scheme=scheme
     )
 
-@app.route('/scheme2')
-def scheme2():
-    latitude = float(request.args.get('latitude'))
-    longitude = float(request.args.get('longitude'))
-    t = int(request.args.get('t'))
-    n = int(request.args.get('n'))
+@app.route('/reconstruct')
+def reconstruct():
+    scheme = session.get('scheme')
+    result = session.get('result')
 
-    recovered_latitude, recovered_longitude, shares = scheme2_module.process_scheme2(latitude, longitude, t, n)
-
-    # Get inputted city and country
-    input_city, input_country = get_location_info(latitude, longitude)
+    if scheme == 'shamirs_secret_sharing':
+        recovered_latitude = result['recovered_latitude']
+        recovered_longitude = result['recovered_longitude']
+    elif scheme == 'two_poly_shamir':
+        recovered_latitude = result[0]
+        recovered_longitude = result[1]
+    else:
+        recovered_latitude, recovered_longitude = None, None  # Handle other schemes
 
     # Get recovered city and country
     recovered_city, recovered_country = get_location_info(recovered_latitude, recovered_longitude)
 
-    result = {
-        "recovered_latitude": recovered_latitude,
-        "recovered_longitude": recovered_longitude,
-        "shares": shares
-    }
+    # Render appropriate template based on scheme
+    if scheme == 'shamirs_secret_sharing':
+        template = 'reconstruct_shamirs_secret_sharing.html'
+    elif scheme == 'two_poly_shamir':
+        template = 'reconstruct_two_poly_shamir.html'
+    else:
+        template = 'reconstruct_other.html'  # Default or other schemes
 
     return render_template(
-        'scheme2.html',
-        result=result,
-        latitude=latitude,
-        longitude=longitude,
-        city=input_city,
-        country=input_country,
+        template,
+        recovered_latitude=recovered_latitude,
+        recovered_longitude=recovered_longitude,
         recovered_city=recovered_city,
-        recovered_country=recovered_country,
-        backend_info="This page is using the scheme2.py backend script."
+        recovered_country=recovered_country
     )
-
-@app.route('/scheme3')
-def scheme3():
-    # Implement similar to scheme1 and scheme2
-    pass
 
 if __name__ == '__main__':
     app.run(debug=True)
