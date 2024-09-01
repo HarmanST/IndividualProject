@@ -40,7 +40,7 @@ def index():
         scheme = request.form['scheme']
 
         # Generate shares based on selected scheme
-        if scheme == 'shamirs_secret_sharing':
+        if scheme == 'shamirs_pairing':
             result = shamir_secret_sharing(latitude, longitude, t=t, n=n)
         elif scheme == 'two_poly_shamir':
             result = two_poly_shamir.process_scheme2(latitude, longitude, t, n)
@@ -69,8 +69,8 @@ def display_shares():
     input_city, input_country = get_location_info(latitude, longitude)
 
     # Render appropriate template based on scheme
-    if scheme == 'shamirs_secret_sharing':
-        template = 'display_shares_shamirs_secret_sharing.html'
+    if scheme == 'shamirs_pairing':
+        template = 'display_shares_shamirs_pairing_func.html'
     elif scheme == 'two_poly_shamir':
         shares = result[2]  # The third item in the result tuple is the shares list
         template = 'display_shares_two_poly_shamir.html'
@@ -93,7 +93,7 @@ def reconstruct():
     scheme = session.get('scheme')
     result = session.get('result')
 
-    if scheme == 'shamirs_secret_sharing':
+    if scheme == 'shamirs_pairing':
         recovered_latitude = result['recovered_latitude']
         recovered_longitude = result['recovered_longitude']
     elif scheme == 'two_poly_shamir':
@@ -106,8 +106,8 @@ def reconstruct():
     recovered_city, recovered_country = get_location_info(recovered_latitude, recovered_longitude)
 
     # Render appropriate template based on scheme
-    if scheme == 'shamirs_secret_sharing':
-        template = 'reconstruct_shamirs_secret_sharing.html'
+    if scheme == 'shamirs_pairing':
+        template = 'reconstruct_shamirs_pairing_func.html'
     elif scheme == 'two_poly_shamir':
         template = 'reconstruct_two_poly_shamir.html'
     else:
