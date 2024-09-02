@@ -21,6 +21,13 @@
 <p><strong>City:</strong> {{ city }}</p>
 <p><strong>Country:</strong> {{ country }}</p>
 
+<h3>Selected Apps:</h3>
+<ul>
+  {% for app in selected_apps %}
+  <li>{{ app }}</li>
+  {% endfor %}
+</ul>
+
 <h3>Shares:</h3>
 <table>
   <tr>

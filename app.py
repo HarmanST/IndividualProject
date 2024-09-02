@@ -56,6 +56,8 @@ def index():
         session['longitude'] = longitude
         session['result'] = result
         session['scheme'] = scheme
+        session['selected_apps'] = selected_apps  # Store selected apps in session
+
 
         # Redirect to the page that displays the shares
         return redirect(url_for('display_shares'))
@@ -68,6 +70,8 @@ def display_shares():
     longitude = session.get('longitude')
     result = session.get('result')
     scheme = session.get('scheme')
+    selected_apps = session.get('selected_apps', [])
+    print("for display shares: ", selected_apps)
 
     # Get inputted city and country
     input_city, input_country = get_location_info(latitude, longitude)
@@ -89,7 +93,8 @@ def display_shares():
         longitude=longitude,
         city=input_city,
         country=input_country,
-        scheme=scheme
+        scheme=scheme,
+        selected_apps=selected_apps  # Pass selected apps to the template
     )
 
 @app.route('/reconstruct')
