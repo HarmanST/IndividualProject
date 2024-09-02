@@ -97,3 +97,34 @@ th, td {
 .main-page-button:hover {
     background-color: #ff4949;
 }
+
+/* New styles for app selection checkboxes */
+#app-selection-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+#app-selection-form div {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: left;
+}
+
+#app-selection-form label {
+    margin: 0;
+    font-weight: normal;
+    font-size: 14px;
+}
+
+#app-selection-form input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+button[type="submit"] {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+}

@@ -63,16 +63,86 @@
     <div class="modal-content">
         <span id="close-app-modal" class="close-modal">&times;</span>
         <h2>Select Apps</h2>
-        <form id="app-form">
-            <div class="app-grid">
-                {% for i in range(1, 21) %}
-                <div class="app-checkbox">
-                    <input type="checkbox" id="app{{ i }}" name="apps" value="App{{ i }}">
-                    <label for="app{{ i }}">App {{ i }}</label>
-                </div>
-                {% endfor %}
+        <form id="app-selection-form">
+            <h3>Select Apps:</h3>
+            <div>
+                <input type="checkbox" id="google-maps" name="apps" value="Google Maps">
+                <label for="google-maps">Google Maps</label>
+            </div>
+            <div>
+                <input type="checkbox" id="snapchat" name="apps" value="Snapchat">
+                <label for="snapchat">Snapchat</label>
+            </div>
+            <div>
+                <input type="checkbox" id="waze" name="apps" value="Waze">
+                <label for="waze">Waze</label>
+            </div>
+            <div>
+                <input type="checkbox" id="citymapper" name="apps" value="Citymapper">
+                <label for="citymapper">Citymapper</label>
+            </div>
+            <div>
+                <input type="checkbox" id="uber" name="apps" value="Uber">
+                <label for="uber">Uber</label>
+            </div>
+            <div>
+                <input type="checkbox" id="lyft" name="apps" value="Lyft">
+                <label for="lyft">Lyft</label>
+            </div>
+            <div>
+                <input type="checkbox" id="facebook" name="apps" value="Facebook">
+                <label for="facebook">Facebook</label>
+            </div>
+            <div>
+                <input type="checkbox" id="instagram" name="apps" value="Instagram">
+                <label for="instagram">Instagram</label>
+            </div>
+            <div>
+                <input type="checkbox" id="twitter" name="apps" value="Twitter">
+                <label for="twitter">Twitter</label>
+            </div>
+            <div>
+                <input type="checkbox" id="whatsapp" name="apps" value="WhatsApp">
+                <label for="whatsapp">WhatsApp</label>
+            </div>
+            <div>
+                <input type="checkbox" id="apple-maps" name="apps" value="Apple Maps">
+                <label for="apple-maps">Apple Maps</label>
+            </div>
+            <div>
+                <input type="checkbox" id="weather-channel" name="apps" value="The Weather Channel">
+                <label for="weather-channel">The Weather Channel</label>
+            </div>
+            <div>
+                <input type="checkbox" id="uber-eats" name="apps" value="Uber Eats">
+                <label for="uber-eats">Uber Eats</label>
+            </div>
+            <div>
+                <input type="checkbox" id="grubhub" name="apps" value="Grubhub">
+                <label for="grubhub">Grubhub</label>
+            </div>
+            <div>
+                <input type="checkbox" id="postmates" name="apps" value="Postmates">
+                <label for="postmates">Postmates</label>
+            </div>
+            <div>
+                <input type="checkbox" id="airbnb" name="apps" value="Airbnb">
+                <label for="airbnb">Airbnb</label>
+            </div>
+            <div>
+                <input type="checkbox" id="yelp" name="apps" value="Yelp">
+                <label for="yelp">Yelp</label>
+            </div>
+            <div>
+                <input type="checkbox" id="foursquare" name="apps" value="Foursquare">
+                <label for="foursquare">Foursquare</label>
+            </div>
+            <div>
+                <input type="checkbox" id="swarm" name="apps" value="Swarm">
+                <label for="swarm">Swarm</label>
             </div>
         </form>
+
         <button id="save-apps-button" type="button">Save</button>
     </div>
 </div>
