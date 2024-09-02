@@ -128,3 +128,7 @@ button[type="submit"] {
     width: 100%;
     margin-top: 20px;
 }
+
+#app-modal {
+    display: none;
+}

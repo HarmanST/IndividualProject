@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import requests
 from Implementations.Schemes.PairingFunctions.main import shamir_secret_sharing
 import Implementations.Schemes.TwoPolyShamir.scheme2 as two_poly_shamir
-# Import other schemes as needed
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Needed for session management
@@ -27,10 +26,15 @@ def get_location_info(latitude, longitude):
 def index():
     message = "Please enter your latitude and longitude, choose t and n, and select the secret sharing scheme."
     if request.method == 'POST':
+        # Capture selected apps
+        selected_apps = request.form.get('selected_apps')
+        selected_apps_list = selected_apps.split(',') if selected_apps else []
+        print(selected_apps_list)
+
         latitude = float(request.form['latitude'])
         longitude = float(request.form['longitude'])
         t = int(request.form['t'])
-        n = int(request.form['n'])
+        n = len(selected_apps_list)  # Use the number of selected apps as 'n'
 
         # Validate that n is greater than or equal to t
         if n < t:

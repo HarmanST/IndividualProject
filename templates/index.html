@@ -16,8 +16,6 @@
 
     <!-- JavaScript for Map and App Selection Functionality -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-
-
 </head>
 <body>
 <!-- Top Menu -->
@@ -40,6 +38,9 @@
 
     <!-- Use Map Button Positioned Below Latitude and Longitude -->
     <button id="use-map-button" type="button">Use Map</button>
+
+    <!-- Hidden input to store selected apps -->
+    <input type="hidden" id="selected-apps" name="selected_apps">
 
     <label for="t">Minimum Shares (t):</label>
     <input type="number" id="t" name="t" value="3" min="2" required>
@@ -141,9 +142,8 @@
                 <input type="checkbox" id="swarm" name="apps" value="Swarm">
                 <label for="swarm">Swarm</label>
             </div>
+            <button id="save-apps-button" type="button">Save</button>
         </form>
-
-        <button id="save-apps-button" type="button">Save</button>
     </div>
 </div>
 
