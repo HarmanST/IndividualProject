@@ -29,7 +29,6 @@ def index():
         # Capture selected apps
         selected_apps = request.form.get('selected_apps')
         selected_apps_list = selected_apps.split(',') if selected_apps else []
-        print(selected_apps_list)
 
         latitude = float(request.form['latitude'])
         longitude = float(request.form['longitude'])
@@ -71,7 +70,7 @@ def display_shares():
     result = session.get('result')
     scheme = session.get('scheme')
     selected_apps = session.get('selected_apps', [])
-    print("for display shares: ", selected_apps)
+    print(selected_apps)
 
     # Get inputted city and country
     input_city, input_country = get_location_info(latitude, longitude)

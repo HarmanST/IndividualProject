@@ -23,8 +23,8 @@
 
 <h3>Selected Apps:</h3>
 <ul>
-  {% for app in selected_apps %}
-  <a>{{ app }}</a>
+  {% for app in selected_apps.split(',') %}
+  <li>{{ app }}</li>
   {% endfor %}
 </ul>
 
