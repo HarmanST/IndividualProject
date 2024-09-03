@@ -69,8 +69,16 @@ def display_shares():
     longitude = session.get('longitude')
     result = session.get('result')
     scheme = session.get('scheme')
-    selected_apps = session.get('selected_apps', [])
-    print(selected_apps)
+    selected_apps = session.get('selected_apps', "")
+    selected_apps_list = selected_apps.split(',') if selected_apps else []
+
+    # Zip shares with selected apps
+    if scheme == 'shamirs_pairing':
+        shares_with_apps = list(zip(result['shares'], selected_apps_list))
+    elif scheme == 'two_poly_shamir':
+        shares_with_apps = list(zip(result[2], selected_apps_list))  # result[2] contains the shares list
+    else:
+        shares_with_apps = []
 
     # Get inputted city and country
     input_city, input_country = get_location_info(latitude, longitude)
@@ -79,22 +87,21 @@ def display_shares():
     if scheme == 'shamirs_pairing':
         template = 'display_shares_shamirs_pairing_func.html'
     elif scheme == 'two_poly_shamir':
-        shares = result[2]  # The third item in the result tuple is the shares list
         template = 'display_shares_two_poly_shamir.html'
-        result = {"shares": shares}  # Pass only the shares to the template
     else:
         template = 'display_shares_other.html'  # Default or other schemes
 
     return render_template(
         template,
-        result=result,
+        result={"shares": shares_with_apps},
         latitude=latitude,
         longitude=longitude,
         city=input_city,
         country=input_country,
         scheme=scheme,
-        selected_apps=selected_apps  # Pass selected apps to the template
+        selected_apps=selected_apps_list  # Pass the list of selected apps
     )
+
 
 @app.route('/reconstruct')
 def reconstruct():

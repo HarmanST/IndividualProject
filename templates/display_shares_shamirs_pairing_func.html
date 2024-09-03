@@ -1,3 +1,4 @@
+<!-- display_shares_shamirs_pairing_func.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,22 +22,17 @@
 <p><strong>City:</strong> {{ city }}</p>
 <p><strong>Country:</strong> {{ country }}</p>
 
-<h3>Selected Apps:</h3>
-<ul>
-  {% for app in selected_apps.split(',') %}
-  <li>{{ app }}</li>
-  {% endfor %}
-</ul>
-
 <h3>Shares:</h3>
 <table>
   <tr>
     <th>Share #</th>
+    <th>App Name</th>
     <th>Share Value</th>
   </tr>
-  {% for share in result['shares'] %}
+  {% for share, app in result['shares'] %}
   <tr>
     <td>{{ loop.index }}</td>
+    <td>{{ app }}</td>
     <td>{{ share }}</td>
   </tr>
   {% endfor %}
