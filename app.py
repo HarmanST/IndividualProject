@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import requests
 import time
-from Implementations.Schemes.PairingFunctions.main import shamir_secret_sharing
+from Implementations.Schemes.PairingFunctions.main import recover_location_shamirs_pairing, create_shares_shamirs_pairing
 import Implementations.Schemes.TwoPolyShamir.scheme2 as two_poly_shamir
+from Implementations.Schemes.TwoPolyShamir.scheme2 import recover_location
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Needed for session management
@@ -48,7 +49,7 @@ def index():
             start_time = time.perf_counter()
 
             #creating shares with function from backend script
-            result = shamir_secret_sharing(latitude, longitude, t=t, n=n)
+            result = create_shares_shamirs_pairing(latitude, longitude, t=t, n=n)
 
             end_time = time.perf_counter()
             create_share_time_shamirs_pairing = end_time - start_time
@@ -57,8 +58,7 @@ def index():
         elif scheme == 'two_poly_shamir':
             start_time = time.perf_counter()
 
-            result = two_poly_shamir.process_scheme2(latitude, longitude, t, n)
-
+            result = two_poly_shamir.generate_location_shares(latitude, longitude, t, n)
 
             end_time = time.perf_counter()
             create_share_time_shamirs_pairing = end_time - start_time
@@ -67,8 +67,8 @@ def index():
             result = None  # Handle other schemes
 
         # Save relevant data in session for later use
-        session['latitude'] = latitude
-        session['longitude'] = longitude
+        #session['latitude'] = latitude
+        #session['longitude'] = longitude
         session['result'] = result
         session['scheme'] = scheme
         session['selected_apps'] = selected_apps  # Store selected apps in session
@@ -81,8 +81,8 @@ def index():
 
 @app.route('/display_shares')
 def display_shares():
-    latitude = session.get('latitude')
-    longitude = session.get('longitude')
+    #latitude = session.get('latitude')
+    #longitude = session.get('longitude')
     result = session.get('result')
     scheme = session.get('scheme')
     selected_apps = session.get('selected_apps', "")
@@ -92,12 +92,12 @@ def display_shares():
     if scheme == 'shamirs_pairing':
         shares_with_apps = list(zip(result['shares'], selected_apps_list))
     elif scheme == 'two_poly_shamir':
-        shares_with_apps = list(zip(result[2], selected_apps_list))  # result[2] contains the shares list
+        shares_with_apps = list(zip(result, selected_apps_list))
     else:
         shares_with_apps = []
 
     # Get inputted city and country
-    input_city, input_country = get_location_info(latitude, longitude)
+    #input_city, input_country = get_location_info(latitude, longitude)
 
     # Render appropriate template based on scheme
     if scheme == 'shamirs_pairing':
@@ -110,10 +110,10 @@ def display_shares():
     return render_template(
         template,
         result={"shares": shares_with_apps},
-        latitude=latitude,
-        longitude=longitude,
-        city=input_city,
-        country=input_country,
+        #latitude=latitude,
+        #longitude=longitude,
+        #city=input_city,
+        #country=input_country,
         scheme=scheme,
         selected_apps=selected_apps_list  # Pass the list of selected apps
     )
@@ -123,26 +123,41 @@ def display_shares():
 def reconstruct():
     scheme = session.get('scheme')
     result = session.get('result')
+    selected_apps = session.get('selected_apps', "")
+    selected_apps_list = selected_apps.split(',') if selected_apps else []
 
+    # Get the shares from the result
     if scheme == 'shamirs_pairing':
-        recovered_latitude = result['recovered_latitude']
-        recovered_longitude = result['recovered_longitude']
+        shares = result['shares']  # Shares for Shamir's pairing scheme
+        t = len(selected_apps_list)  # Assuming t is the number of selected apps
+
+        # Recover location using the backend function
+        recovered_location = recover_location_shamirs_pairing(shares[:t], t)
+        recovered_latitude = recovered_location['recovered_latitude']
+        recovered_longitude = recovered_location['recovered_longitude']
+
     elif scheme == 'two_poly_shamir':
-        recovered_latitude = result[0]
-        recovered_longitude = result[1]
+        shares = result
+        t = len(selected_apps_list)
+
+        lat_shares = [(share[0], share[1]) for share in shares[:t]]
+        lon_shares = [(share[0], share[2]) for share in shares[:t]]
+
+        recovered_latitude, recovered_longitude = recover_location(lat_shares, lon_shares)
+
     else:
         recovered_latitude, recovered_longitude = None, None  # Handle other schemes
 
-    # Get recovered city and country
+    # Get recovered city and country based on latitude and longitude
     recovered_city, recovered_country = get_location_info(recovered_latitude, recovered_longitude)
 
-    # Render appropriate template based on scheme
+    # Render the appropriate template based on the scheme
     if scheme == 'shamirs_pairing':
         template = 'reconstruct_shamirs_pairing_func.html'
     elif scheme == 'two_poly_shamir':
         template = 'reconstruct_two_poly_shamir.html'
     else:
-        template = 'reconstruct_other.html'  # Default or other schemes
+        template = 'reconstruct_other.html'  # Handle other schemes
 
     return render_template(
         template,
