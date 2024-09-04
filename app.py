@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import requests
+import time
 from Implementations.Schemes.PairingFunctions.main import shamir_secret_sharing
 import Implementations.Schemes.TwoPolyShamir.scheme2 as two_poly_shamir
 
@@ -24,7 +25,7 @@ def get_location_info(latitude, longitude):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    message = "Please enter your latitude and longitude, choose t and n, and select the secret sharing scheme."
+    message = "Please enter your latitude and longitude, choose t, apps, and select the secret sharing scheme."
     if request.method == 'POST':
         # Capture selected apps
         selected_apps = request.form.get('selected_apps')
@@ -44,9 +45,24 @@ def index():
 
         # Generate shares based on selected scheme
         if scheme == 'shamirs_pairing':
+            start_time = time.perf_counter()
+
+            #creating shares with function from backend script
             result = shamir_secret_sharing(latitude, longitude, t=t, n=n)
+
+            end_time = time.perf_counter()
+            create_share_time_shamirs_pairing = end_time - start_time
+            print(f"Time for creating shares with Shamri's SSS w/ pairing functions {create_share_time_shamirs_pairing} ")
+
         elif scheme == 'two_poly_shamir':
+            start_time = time.perf_counter()
+
             result = two_poly_shamir.process_scheme2(latitude, longitude, t, n)
+
+
+            end_time = time.perf_counter()
+            create_share_time_shamirs_pairing = end_time - start_time
+            print(f"Time for creating shares with Shamri's SSS w/ two polynomials {create_share_time_shamirs_pairing} ")
         else:
             result = None  # Handle other schemes
 

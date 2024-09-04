@@ -92,7 +92,7 @@ def _extended_gcd(a, b):
         y, last_y = last_y - quot * y, y
     return last_x, last_y
 
-# Example use function to be called by Flask
+# Use function to be called by Flask
 def process_scheme2(latitude, longitude, t, n):
     """Process Scheme 2"""
     shares = generate_location_shares(latitude, longitude, t, n)
