@@ -1,9 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import requests
 import time
+
 from Implementations.Schemes.PairingFunctions.main import recover_location_shamirs_pairing, create_shares_shamirs_pairing
+
 import Implementations.Schemes.TwoPolyShamir.scheme2 as two_poly_shamir
 from Implementations.Schemes.TwoPolyShamir.scheme2 import recover_location
+
+from Implementations.Schemes.AsmuthBloom_Pairing.asmuthPairing import create_shares, reconstruct_coordinates
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Needed for session management
@@ -63,6 +67,16 @@ def index():
             end_time = time.perf_counter()
             create_share_time_shamirs_pairing = end_time - start_time
             print(f"Time for creating shares with Shamri's SSS w/ two polynomials {create_share_time_shamirs_pairing} ")
+        elif scheme == 'Asmuths_pairing':
+            start_time = time.perf_counter()
+
+            result = create_shares(n, t, longitude, latitude)
+
+            print(result)
+
+            end_time = time.perf_counter()
+            create_share_time_asmuth_pairing = end_time - start_time
+            print(f"Time for creating shares with Shamri's SSS w/ two polynomials {create_share_time_asmuth_pairing} ")
         else:
             result = None  # Handle other schemes
 
@@ -72,6 +86,8 @@ def index():
         session['result'] = result
         session['scheme'] = scheme
         session['selected_apps'] = selected_apps  # Store selected apps in session
+        session['t'] = t
+        session['n'] = n
 
 
         # Redirect to the page that displays the shares
@@ -93,6 +109,8 @@ def display_shares():
         shares_with_apps = list(zip(result['shares'], selected_apps_list))
     elif scheme == 'two_poly_shamir':
         shares_with_apps = list(zip(result, selected_apps_list))
+    elif scheme == 'Asmuths_pairing':
+        shares_with_apps = list(zip(result['shares'], selected_apps_list))
     else:
         shares_with_apps = []
 
@@ -104,16 +122,14 @@ def display_shares():
         template = 'display_shares_shamirs_pairing_func.html'
     elif scheme == 'two_poly_shamir':
         template = 'display_shares_two_poly_shamir.html'
+    elif scheme == 'Asmuths_pairing':
+        template = 'display_shares_asmuth_pairing.html'
     else:
         template = 'display_shares_other.html'  # Default or other schemes
 
     return render_template(
         template,
         result={"shares": shares_with_apps},
-        #latitude=latitude,
-        #longitude=longitude,
-        #city=input_city,
-        #country=input_country,
         scheme=scheme,
         selected_apps=selected_apps_list  # Pass the list of selected apps
     )
@@ -125,11 +141,12 @@ def reconstruct():
     result = session.get('result')
     selected_apps = session.get('selected_apps', "")
     selected_apps_list = selected_apps.split(',') if selected_apps else []
+    t = session.get('t')
+    n = session.get('n')
 
     # Get the shares from the result
     if scheme == 'shamirs_pairing':
         shares = result['shares']  # Shares for Shamir's pairing scheme
-        t = len(selected_apps_list)  # Assuming t is the number of selected apps
 
         # Recover location using the backend function
         recovered_location = recover_location_shamirs_pairing(shares[:t], t)
@@ -138,12 +155,20 @@ def reconstruct():
 
     elif scheme == 'two_poly_shamir':
         shares = result
-        t = len(selected_apps_list)
 
         lat_shares = [(share[0], share[1]) for share in shares[:t]]
         lon_shares = [(share[0], share[2]) for share in shares[:t]]
 
         recovered_latitude, recovered_longitude = recover_location(lat_shares, lon_shares)
+
+    elif scheme == 'Asmuths_pairing':
+        shares = result['shares']
+        m = result['moduli']
+
+        recovered_location = reconstruct_coordinates(shares, m, t)
+
+        recovered_latitude = recovered_location['recovered_latitude']
+        recovered_longitude = recovered_location['recovered_longitude']
 
     else:
         recovered_latitude, recovered_longitude = None, None  # Handle other schemes
@@ -155,6 +180,8 @@ def reconstruct():
     if scheme == 'shamirs_pairing':
         template = 'reconstruct_shamirs_pairing_func.html'
     elif scheme == 'two_poly_shamir':
+        template = 'reconstruct_two_poly_shamir.html'
+    elif scheme == 'Asmuths_pairing':
         template = 'reconstruct_two_poly_shamir.html'
     else:
         template = 'reconstruct_other.html'  # Handle other schemes
