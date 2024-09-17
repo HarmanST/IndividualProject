@@ -16,7 +16,7 @@
     </ul>
 </nav>
 
-<h1>Shamir's Secret Sharing - Shares Generated</h1>
+<h1>Asmuth-Bloom - Shares Generated</h1>
 
 
 <h3>Shares:</h3>
@@ -25,16 +25,22 @@
         <th>Share #</th>
         <th>App Name</th>
         <th>Share Value</th>
+        <th>Moduli Value</th>
     </tr>
-    {% for shares, app in result['shares'] %}
+    {% for share, moduli, app in result.shares %}
     <tr>
         <td>{{ loop.index }}</td>
         <td>{{ app }}</td>
-        <td>{{ shares }}</td>
+        <td>{{ share }}</td>
+        <td>{{ moduli }}</td>
     </tr>
     {% endfor %}
 </table>
 
-<a href="{{ url_for('reconstruct') }}" class="button">Reconstruct Location</a>
+<p><strong>Share creation time :</strong> {{time}} </p>
+<p><strong>Memory used under share creation</strong> {{mem}} </p>
+
+<a href="{{ url_for('reconstruct') }}" class="button"  style="padding: 10px 15px; background-color: #4CAF50; color: white; border: none;
+cursor: pointer; border-radius: 8px;margin-top: 10px; font-size: 16px;">Reconstruct Location</a>
 </body>
 </html>

@@ -15,12 +15,16 @@
   </ul>
 </nav>
 
-<h1>Asmuth-Bloom pairing - Reconstructed Location</h1>
+<h1>Asmuth-Bloom w/ pairing function - Reconstructed Location</h1>
 <p><strong>Recovered Latitude:</strong> {{ recovered_latitude }}</p>
 <p><strong>Recovered Longitude:</strong> {{ recovered_longitude }}</p>
 <p><strong>Recovered City:</strong> {{ recovered_city }}</p>
 <p><strong>Recovered Country:</strong> {{ recovered_country }}</p>
 
-<a href="{{ url_for('index') }}" class="button">Back to Main Page</a>
+<p><strong>Time used to reconstruct the secret location:</strong> {{time}} </p>
+<p><strong>Memory used under reconstruction</strong> {{mem}} </p>
+
+<a href="{{ url_for('index') }}" class="button" style="padding: 10px 15px; background-color: #4CAF50; color: white; border: none;
+cursor: pointer; border-radius: 8px;margin-top: 10px; font-size: 16px;">Back to Main Page</a>
 </body>
 </html>

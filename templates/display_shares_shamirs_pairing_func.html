@@ -35,6 +35,10 @@
   {% endfor %}
 </table>
 
-<a href="{{ url_for('reconstruct') }}" class="button">Reconstruct Location</a>
+<p><strong>Share creation time :</strong> {{time}} </p>
+<p><strong>Memory used under share creation</strong> {{mem}} </p>
+
+<a href="{{ url_for('reconstruct') }}" class="button" style="padding: 10px 15px; background-color: #4CAF50; color: white; border: none;
+cursor: pointer; border-radius: 8px;margin-top: 10px; font-size: 16px;" >Reconstruct Location</a>
 </body>
 </html>

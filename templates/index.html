@@ -42,12 +42,12 @@
     <!-- Hidden input to store selected apps -->
     <input type="hidden" id="selected-apps" name="selected_apps">
 
-    <label for="t">Minimum Shares (t):</label>
-    <input type="number" id="t" name="t" value="3" min="2" required>
-
     <!-- Select Apps Button -->
     <button id="select-apps-button" type="button">Select Apps</button>
     <input type="hidden" id="n" name="n" value="0">
+
+    <label for="t">Minimum Shares (t):</label>
+    <input type="number" id="t" name="t" value="3" min="2" required>
 
     <!-- Scheme Selection Dropdown -->
     <label for="scheme">Choose Secret Sharing Scheme:</label>
@@ -55,10 +55,6 @@
         <option value="shamirs_pairing">Shamir's SSS w/ pairing function</option>
         <option value="two_poly_shamir">Shamir's SSS w/ 2 polynomials</option>
         <option value="Asmuths_pairing">Asmuth-bloom w/ pairing function</option>
-        <option value="">Asmuth-bloom w/ two shares pr app</option>
-        <option value="">Mignotte's SSS w/ pairing function</option>
-        <option value="">Mignotte's SSS w/ two shares pr app</option>
-        <option value="">Blakley's SSS ?? w/ </option>
     </select>
 
     <button type="submit">Submit</button>
