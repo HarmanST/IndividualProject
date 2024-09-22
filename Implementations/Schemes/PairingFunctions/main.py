@@ -74,8 +74,8 @@ def _lagrange_interpolate(x, x_s, y_s, p):
 
 def recover_secret(shares, prime=_PRIME):
     """Recovers the secret from share points."""
-    if len(shares) < 3:
-        raise ValueError("Need at least three shares")
+    if len(shares) < 2:
+        raise ValueError("Need at least two shares")
     x_s, y_s = zip(*shares)
     return _lagrange_interpolate(0, x_s, y_s, prime)
 
