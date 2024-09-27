@@ -2,12 +2,11 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import requests
 import time
 import tracemalloc
-import psutil
 
-from Implementations.Schemes.PairingFunctions.main import recover_location_shamirs_pairing, create_shares_shamirs_pairing
+from Implementations.Schemes.ShamirsPairing.shamirsPairing import recover_location_shamirs_pairing, create_shares_shamirs_pairing
 
-import Implementations.Schemes.TwoPolyShamir.scheme2 as two_poly_shamir
-from Implementations.Schemes.TwoPolyShamir.scheme2 import recover_location
+import Implementations.Schemes.TwoPolyShamir.shamirs2poly as two_poly_shamir
+from Implementations.Schemes.TwoPolyShamir.shamirs2poly import recover_location
 
 from Implementations.Schemes.AsmuthBloom_Pairing.asmuthPairing import create_shares, reconstruct_coordinates
 
@@ -15,7 +14,7 @@ from Implementations.Schemes.AsmuthBloom_Pairing.asmuthPairing import create_sha
 
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # Needed for session management
+app.secret_key = 'your_secret_key'  # for session management
 
 def get_location_info(latitude, longitude):
     url = f"https://nominatim.openstreetmap.org/reverse?format=json&lat={latitude}&lon={longitude}"
@@ -37,7 +36,6 @@ def get_location_info(latitude, longitude):
 def index():
     message = "Please enter your latitude and longitude, choose t, apps, and select the secret sharing scheme."
     if request.method == 'POST':
-        # Capture selected apps
         selected_apps = request.form.get('selected_apps')
         selected_apps_list = selected_apps.split(',') if selected_apps else []
         create_share_time = 0
@@ -45,8 +43,8 @@ def index():
 
         latitude = float(request.form['latitude'])
         longitude = float(request.form['longitude'])
-        t = int(request.form['t'])
-        n = len(selected_apps_list)  # Use the number of selected apps as 'n'
+        t = int(request.form['t'])   #Threshold
+        n = len(selected_apps_list)  # number of selected apps
 
         # Validate that n is greater than or equal to t
         if n < t:

@@ -1,20 +1,14 @@
 """
-Found here: https://en.wikipedia.org/wiki/Shamir%27s_secret_sharing#Shamir's_secret_sharing_scheme
-
-The following Python implementation of Shamir's secret sharing is
-released into the Public Domain under the terms of CC0 and OWFa:
-https://creativecommons.org/publicdomain/zero/1.0/
-http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0
-
-See the bottom few lines for usage. Tested on Python 2 and 3.
+The following Python implementation of Shamir's secret sharing is inspired by the implementation found here:
+https://en.wikipedia.org/wiki/Shamir%27s_secret_sharing#Shamir's_secret_sharing_scheme
 """
 
 from __future__ import division, print_function
 import random
 import functools
 
-# Import the functions from the pairing_functions.py script
-from .elegantPairingFunction import scale_float_to_int, scale_int_to_float, ElegantPairSigned, ElegantUnpair
+# Import the pairing functions
+from .pairingFunctions import scale_float_to_int, scale_int_to_float, ElegantPairSigned, ElegantUnpair
 
 # Use a smaller prime, for example, a 64-bit prime number
 _PRIME = 2 ** 61 - 1  # A smaller prime, e.g., Mersenne prime

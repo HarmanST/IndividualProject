@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-From the saved youtube video
-"""
 
 import math
 
