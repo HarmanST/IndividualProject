@@ -133,7 +133,7 @@ def display_shares():
     else:
         shares_with_apps = []
 
-    # Render appropriate template based on scheme
+    # Render template based on scheme
     if scheme == 'shamirs_pairing':
         template = 'display_shares_shamirs_pairing_func.html'
     elif scheme == 'two_poly_shamir':
@@ -158,9 +158,7 @@ def reconstruct():
     scheme = session.get('scheme')
     result = session.get('result')
     selected_apps = session.get('selected_apps', "")
-    selected_apps_list = selected_apps.split(',') if selected_apps else []
     t = session.get('t')
-    n = session.get('n')
     reconstruct_time = 0
     mem = 0
 
@@ -223,15 +221,16 @@ def reconstruct():
     # Get recovered city and country based on latitude and longitude
     recovered_city, recovered_country = get_location_info(recovered_latitude, recovered_longitude)
 
-    # Render the appropriate template based on the scheme
+    template = 'reconstruct.html'
+
+    #Quick fix better names to display in frontends
     if scheme == 'shamirs_pairing':
-        template = 'reconstruct_shamirs_pairing_func.html'
+        scheme = "Shamir's w/pairing"
     elif scheme == 'two_poly_shamir':
-        template = 'reconstruct_two_poly_shamir.html'
+        scheme = "Shamir's w/2 polynomials"
     elif scheme == 'Asmuths_pairing':
-        template = 'reconstruct_asmuth_pairing.html'
-    else:
-        template = 'reconstruct_other.html'  # Handle other schemes
+        scheme = "Asmuth-Bloom w/pairing"
+
 
     return render_template(
         template,
@@ -240,7 +239,8 @@ def reconstruct():
         recovered_city=recovered_city,
         recovered_country=recovered_country,
         time=reconstruct_time,
-        mem=mem
+        mem=mem,
+        scheme=scheme
     )
 
 if __name__ == '__main__':

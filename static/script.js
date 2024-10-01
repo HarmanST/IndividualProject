@@ -1,3 +1,6 @@
+//This file uses the open source javascipt library Leaflet (2019). Leaflet — an open-source JavaScript library for interactive maps.
+// [online] Leafletjs.com. Available at: https://leafletjs.com/.
+
 var map;
 var mapModal = document.getElementById('map-modal');
 var useMapButton = document.getElementById('use-map-button');

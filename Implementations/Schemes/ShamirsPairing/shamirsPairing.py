@@ -1,7 +1,7 @@
-"""
-The following Python implementation of Shamir's secret sharing is inspired by the implementation found here:
-https://en.wikipedia.org/wiki/Shamir%27s_secret_sharing#Shamir's_secret_sharing_scheme
-"""
+
+#The following Python implementation is based on Wikipedia Contributors (2019). Shamir’s Secret Sharing.
+#[online] Wikipedia. Available at: https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing.
+#All functions are inspired by the implementation from Wikipedia Contributors (2019).
 
 from __future__ import division, print_function
 import random

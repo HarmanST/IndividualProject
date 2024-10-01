@@ -1,6 +1,9 @@
-# -*- coding: utf-8 -*-
-
 import math
+
+
+# This script uses functions from Guillou, J (2022). Signed Pairing Function. [online] replit.
+# Available at: https://replit.com/@rooksword1/Signed-Pairing-Function#main.py.
+
 
 # Scaling factor to preserve decimal precision
 SCALE_FACTOR = 10**6
@@ -11,6 +14,8 @@ def scale_float_to_int(value):
 def scale_int_to_float(value):
     return value / SCALE_FACTOR
 
+
+#Guillou, J (2022)- START
 def ElegantPairSigned(x, y):
     a = (x * 2) if x >= 0 else (x * -2 - 1)
     b = (y * 2) if y >= 0 else (y * -2 - 1)
@@ -26,4 +31,4 @@ def ElegantUnpair(z):
     b = r[1] // 2 if r[1] % 2 == 0 else (r[1] + 1) // -2
 
     return [a, b]
-
+#Guillou, J (2022)- END

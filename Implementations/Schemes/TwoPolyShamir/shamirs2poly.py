@@ -1,4 +1,8 @@
-# shamirs2poly.py. This is "C:\Users\harma\OneDrive - City, University of London\Cyber Security MSc\Individual Project\Implementations of schemes\Shamirs\2PolyLowerPrimeForHigherThreshold.py"
+
+#The following Python implementation is based on Wikipedia Contributors (2019). Shamir’s Secret Sharing.
+#[online] Wikipedia. Available at: https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing.
+#All functions are inspired by the implementation from Wikipedia Contributors (2019).
+
 
 from __future__ import division
 from __future__ import print_function
@@ -84,11 +88,3 @@ def _extended_gcd(a, b):
         y, last_y = last_y - quot * y, y
     return last_x, last_y
 
-# I think this can be removed
-#def process_scheme2(latitude, longitude, t, n):
-#    """Process Scheme 2"""
-#    shares = generate_location_shares(latitude, longitude, t, n)
-#    lat_shares = [(share[0], share[1]) for share in shares[:t]]
-#    lon_shares = [(share[0], share[2]) for share in shares[:t]]
-#    recovered_latitude, recovered_longitude = recover_location(lat_shares, lon_shares)
-#    return recovered_latitude, recovered_longitude, shares
