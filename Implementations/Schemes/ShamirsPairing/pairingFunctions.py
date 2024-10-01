@@ -22,6 +22,7 @@ def ElegantPairSigned(x, y):
 
     return (a * a) + a + b if a >= b else (b * b) + a
 
+
 def ElegantUnpair(z):
     a = math.floor(math.sqrt(z))
     b = z - (a * a)

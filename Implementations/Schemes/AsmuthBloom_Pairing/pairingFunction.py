@@ -1,9 +1,8 @@
 import math
 
+
 # This script uses functions from Guillou, J (2022). Signed Pairing Function. [online] replit.
 # Available at: https://replit.com/@rooksword1/Signed-Pairing-Function#main.py.
-
-
 
 
 # Scaling factor to preserve decimal precision
@@ -33,5 +32,4 @@ def ElegantUnpair(z):
     b = r[1] // 2 if r[1] % 2 == 0 else (r[1] + 1) // -2
 
     return [a, b]
-
 #Guillou, J (2022) - END
